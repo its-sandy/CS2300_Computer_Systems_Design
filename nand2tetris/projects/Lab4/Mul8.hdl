@@ -1,0 +1,89 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/02/FullAdder.hdl
+
+/**
+ * 8bit unsigned int multiplier
+**/
+
+CHIP Mul8 {
+    IN x[8], y[8], c; 
+    OUT p[16],ans[8], overflow;   
+
+    PARTS:
+    Extend16(a=x, out=x0);
+
+    Not(in=c,out=cn);
+
+    Harem32(x=x0, y=y[0], ans[0]=p[0], ans[0]=ans[0], ans[1..31]=o0);
+    Shift(a=x0, out=x1);
+    Harem32(x=x1, y=y[1], ans=o1);
+    Shift(a=x1, out=x2);
+    Harem32(x=x2, y=y[2], ans=o2);
+    Shift(a=x2, out=x3);
+    Harem32(x=x3, y=y[3], ans=o3);
+    Shift(a=x3, out=x4);
+    Harem32(x=x4, y=y[4], ans=o4);
+    Shift(a=x4, out=x5);
+    Harem32(x=x5, y=y[5], ans=o5);
+    Shift(a=x5, out=x6);
+    Harem32(x=x6, y=y[6], ans=o6);
+    Shift(a=x6, out=x7);
+    Harem32(x=x7, y=y[7], ans=o7);
+    Shift(a=x7, out=x8);
+    Harem32(x=x8, y=y[8], ans=o8);
+    Shift(a=x8, out=x9);
+    Harem32(x=x9, y=y[9], ans=o9);
+    Shift(a=x9, out=x10);
+    Harem32(x=x10, y=y[10], ans=o10);
+    Shift(a=x10, out=x11);
+    Harem32(x=x11, y=y[11], ans=o11);
+    Shift(a=x11, out=x12);
+    Harem32(x=x12, y=y[12], ans=o12);
+    Shift(a=x12, out=x13);
+    Harem32(x=x13, y=y[13], ans=o13);
+    Shift(a=x13, out=x14);
+    Harem32(x=x14, y=y[14], ans=o14);
+    Shift(a=x14, out=x15);
+    Harem32(x=x15, y=y[15], ans=p15);
+
+    Rabbit16(a=cn, out=rab);
+    Xor32(a=p15, b[0..15]=rab, b[16..31]=rab, out=q15);
+    Threesum(a=q15,c[0]=cn,sum=o15, carry=car);
+
+    Threesum(a=o0, b=o1, c=o2, sum=s11, carry=l11);
+    Threesum(a=o3, b=o4, c=o5, sum=s12, carry=l12);
+    Threesum(a=o6, b=o7, c=o8, sum=s13, carry=l13);
+    Threesum(a=o9, b=o10, c=o11, sum=s14, carry=l14);
+    Threesum(a=o12, b=o13, c=o14, sum=s15, carry=l15);
+    Shift(a=l11, out=c11);
+    Shift(a=l12, out=c12);
+    Shift(a=l13, out=c13);
+    Shift(a=l14, out=c14);
+    Shift(a=l15, out=c15);
+
+    Threesum(a=s11, b=c11, c=s12, sum=s11, carry=l11);
+    Threesum(a=c12, b=s13, c=o5, sum=s12, carry=l12);
+    Threesum(a=o6, b=o7, c=o8, sum=s13, carry=l13);
+
+
+
+    Level8(a=o1, b[0..6]=o0, b[7]=o06, c=c, ans=p[1], ans=ans[1], prop=p1);     ///////////////////assuming zero default
+    Level8(a=o2, b=p1, c=c, ans=p[2], ans=ans[2], prop=p2);
+    Rabbit16(a=cn, out[0..7]=cnr8, out[0..3]=cnr4);
+    Xor16(a[0..7]=o3, b[0..7]=cnr8, out[0..7]=o3t);
+    Level8(a=o3t, b=p2, c=cn, ans=p[3], ans=ans[3], ans=ans3, prop[0..3]=p[4..7], prop[0..3]=temp1);
+
+    Or8Way(in[0..3]=temp1,out=temp10);
+    Or(a=temp10,b=ans3,out=temp11);
+    Xor16(a[0..3]=temp1,b[0..3]=cnr4, out[0..3]=temp2);
+    Or8Way(in[0..3]=temp2, out=temp20);
+    Not(in=ans3, out=ans3n);
+    Or(a=temp20, b=ans3n, out=temp21);
+    Xor(a=x[3], b=y[3], out=xab);
+    And(a=xab,b=temp21,out=temp22);
+    Not(in=xab,out=xabn);
+    And(a=xabn,b=temp11,out=temp12);
+    Or(a=temp12,b=temp22,out=overflow);
+}

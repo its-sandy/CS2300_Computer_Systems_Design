@@ -1,0 +1,19 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/DMux8Way.hdl
+
+/**
+ * bit :
+
+ */
+
+CHIP BIT {
+    IN in, load;
+    OUT out;
+
+    PARTS:
+    Mux(a=o1, b=in, sel=load, out=oo);
+    DFF(in=oo, out=o1);
+    And(a=o1, b=o1, out=out);
+}

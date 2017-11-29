@@ -1,0 +1,17 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Xor16.hdl
+
+/**
+ * Sign extension
+ */
+
+CHIP Extend32 {
+    IN a[16];
+    OUT out[32];
+
+    PARTS:
+    And16(a=a, b=a, out=out[0..15]);
+    Rabbit16(a=a[15], out=out[16..31]);
+}

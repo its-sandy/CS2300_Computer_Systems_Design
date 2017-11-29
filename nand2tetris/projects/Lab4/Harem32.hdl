@@ -1,0 +1,19 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/02/FullAdder.hdl
+
+/**
+ * multiplies y with all values of x
+**/
+
+CHIP Harem32 {
+    IN x[32], y; 
+    OUT ans[32];   
+
+    PARTS:
+    Harem8(a=x[0..7], b=y, out=ans[0..7]);
+    Harem8(a=x[8..15], b=y, out=ans[8..15]);
+    Harem8(a=x[16..23], b=y, out=ans[16..23]);
+    Harem8(a=x[24..31], b=y, out=ans[24..31]);
+}

@@ -1,0 +1,21 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Xor16.hdl
+
+/**
+ * toggle adder
+ * for i = 0..15 out[i] = a
+ */
+
+CHIP ASToggle16 {
+    IN x[16], y[16], as;
+    OUT out[16], carry, overflow;
+
+    PARTS:
+    Rabbit16(a=as, out=as16);
+    Xor16(a=y, b=as16, out=oc16);
+
+    CLAFullAdder(a=x, b=oc16, c=as, sum=out, carry=carry, overflow=overflow);
+
+}

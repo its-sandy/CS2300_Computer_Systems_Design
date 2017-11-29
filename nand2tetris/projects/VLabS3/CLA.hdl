@@ -1,0 +1,51 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/02/FullAdder.hdl
+
+/**
+ * 4 bit CLA
+ */
+
+ CHIP CLA {
+    IN a[4], b[4], c0;  // 1-bit inputs
+    OUT sum[4], carry, of;   // generate term
+
+    PARTS:
+    PropGen(a=a[0], b=b[0], prop=p0, gen=g0);
+    PropGen(a=a[1], b=b[1], prop=p1, gen=g1);
+    PropGen(a=a[2], b=b[2], prop=p2, gen=g2);
+    PropGen(a=a[3], b=b[3], prop=p3, gen=g3);
+
+    And(a=p0, b=c0, out=o1);
+    Or(a=o1, b=g0, out=c1);
+
+    And(a=p1, b=o1, out=o2);
+    And(a=p1, b=g0, out=o3);
+    Or(a=o2, b=o3, out=o4);
+    Or(a=o4, b=g1, out=c2);
+
+    And(a=p2, b=o2, out=o5);
+    And(a=p2, b=o3, out=o6);
+    And(a=p2, b=g1, out=o7);
+    Or(a=o5, b=o6, out=o8);
+    Or(a=o7, b=o8, out=o9);
+    Or(a=o9, b=g2, out=c3);
+
+    And(a=p3, b=o5, out=o10);
+    And(a=p3, b=o6, out=o11);
+    And(a=p3, b=o7, out=o12);
+    And(a=p3, b=g2, out=o13);
+    Or(a=o10, b=o11, out=o14);
+    Or(a=o12, b=o14, out=o15);
+    Or(a=o13, b=o15, out=o16);
+    Or(a=o16, b=g3, out=ctemp);
+
+    Xor(a=p0, b=c0, out=sum[0]);
+    Xor(a=p1, b=c1, out=sum[1]);
+    Xor(a=p2, b=c2, out=sum[2]);
+    Xor(a=p3, b=c3, out=sum[3]);
+
+    Xor(a=c3, b=ctemp, out=of);
+    And(a=ctemp, b=ctemp, out=carry);
+}

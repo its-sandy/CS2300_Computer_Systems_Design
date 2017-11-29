@@ -1,0 +1,41 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/02/FullAdder.hdl
+
+/**
+ * 4bit unsigned int multiplier
+**/
+
+CHIP Mulsigned {
+    IN x[4], y[4], c; 
+    OUT p[8],ans[4], overflow;   
+
+    PARTS:
+    Extend4(a=x, out=x1);
+
+    Not(in=c,out=cn);
+
+    Harem8(x=x1, y=y[0], ans[0]=p[0], ans[0]=ans[0], ans[1..7]=o0, ans[7]=o06);
+    Harem8(x=x1, y=y[1], ans=o1);
+    Harem8(x=x1, y=y[2], ans=o2);
+    Harem8(x=x1, y=y[3], ans=o3);
+
+    Level8(a=o1, b[0..6]=o0, b[7]=o06, c=c, ans=p[1], ans=ans[1], prop=p1);     ///////////////////assuming zero default
+    Level8(a=o2, b=p1, c=c, ans=p[2], ans=ans[2], prop=p2);
+    Rabbit16(a=cn, out[0..7]=cnr8, out[0..3]=cnr4);
+    Xor16(a[0..7]=o3, b[0..7]=cnr8, out[0..7]=o3t);
+    Level8(a=o3t, b=p2, c=cn, ans=p[3], ans=ans[3], ans=ans3, prop[0..3]=p[4..7], prop[0..3]=temp1);
+
+    Or8Way(in[0..3]=temp1,out=temp10);
+    Or(a=temp10,b=ans3,out=temp11);
+    Xor16(a[0..3]=temp1,b[0..3]=cnr4, out[0..3]=temp2);
+    Or8Way(in[0..3]=temp2, out=temp20);
+    Not(in=ans3, out=ans3n);
+    Or(a=temp20, b=ans3n, out=temp21);
+    Xor(a=x[3], b=y[3], out=xab);
+    And(a=xab,b=temp21,out=temp22);
+    Not(in=xab,out=xabn);
+    And(a=xabn,b=temp11,out=temp12);
+    Or(a=temp12,b=temp22,out=overflow);
+}

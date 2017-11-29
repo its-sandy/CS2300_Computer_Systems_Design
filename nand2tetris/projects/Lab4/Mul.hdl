@@ -1,0 +1,24 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/02/FullAdder.hdl
+
+/**
+ * 4bit unsigned int multiplier
+**/
+
+CHIP Mul {
+    IN x[4], y[4], c; 
+    OUT p[8],ans[4], overflow;   
+
+    PARTS:
+    Harem(x=x, y=y[0], ans[0]=p[0], ans[0]=ans[0], ans[1..3]=o0);
+    Harem(x=x, y=y[1], ans=o1);
+    Harem(x=x, y=y[2], ans=o2);
+    Harem(x=x, y=y[3], ans=o3);
+
+    Level(a=o1, b[0..2]=o0, c=c, ans=p[1], ans=ans[1], prop=p1);     ///////////////////assuming zero default
+    Level(a=o2, b=p1, c=c, ans=p[2], ans=ans[2], prop=p2);
+    Level(a=o3, b=p2, c=c, ans=p[3], ans=ans[3], prop=p[4..7], prop=temp1);
+    Or8Way(in[0..3]=temp1,out=overflow);
+}

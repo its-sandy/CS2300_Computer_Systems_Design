@@ -1,0 +1,32 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Xor16.hdl
+
+/**
+ * Offspring maker
+ * for i = 0..15 out[i] = a
+ */
+
+CHIP Rabbit16 {
+    IN a;
+    OUT out[16];
+
+    PARTS:
+    And(a=a, b=a, out = out[0]);
+    And(a=a, b=a, out = out[1]);
+    And(a=a, b=a, out = out[2]);
+    And(a=a, b=a, out = out[3]);
+    And(a=a, b=a, out = out[4]);
+    And(a=a, b=a, out = out[5]);
+    And(a=a, b=a, out = out[6]);
+    And(a=a, b=a, out = out[7]);
+    And(a=a, b=a, out = out[8]);
+    And(a=a, b=a, out = out[9]);
+    And(a=a, b=a, out = out[10]);
+    And(a=a, b=a, out = out[11]);
+    And(a=a, b=a, out = out[12]);
+    And(a=a, b=a, out = out[13]);
+    And(a=a, b=a, out = out[14]);
+    And(a=a, b=a, out = out[15]);
+}

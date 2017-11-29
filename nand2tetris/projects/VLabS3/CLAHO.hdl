@@ -1,0 +1,48 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/02/FullAdder.hdl
+
+/**
+ * 4 bit CLA
+ */
+
+ CHIP CLAHO {
+    IN a[16], b[16], c0;  
+    OUT sum[16], carry, of; 
+
+    PARTS:
+    PropGen1(a=a[0..3], b=b[0..3], prop1=p0, gen1=g0);
+    PropGen1(a=a[4..7], b=b[4..7], prop1=p1, gen1=g1);
+    PropGen1(a=a[8..11], b=b[8..11], prop1=p2, gen1=g2);
+    PropGen1(a=a[12..15], b=b[12..15], prop1=p3, gen1=g3);
+
+    And(a=p0, b=c0, out=o1);
+    Or(a=o1, b=g0, out=c4);
+
+    And(a=p1, b=o1, out=o2);
+    And(a=p1, b=g0, out=o3);
+    Or(a=o2, b=o3, out=o4);
+    Or(a=o4, b=g1, out=c8);
+
+    And(a=p2, b=o2, out=o5);
+    And(a=p2, b=o3, out=o6);
+    And(a=p2, b=g1, out=o7);
+    Or(a=o5, b=o6, out=o8);
+    Or(a=o7, b=o8, out=o9);
+    Or(a=o9, b=g2, out=c12);
+
+    And(a=p3, b=o5, out=o10);
+    And(a=p3, b=o6, out=o11);
+    And(a=p3, b=o7, out=o12);
+    And(a=p3, b=g2, out=o13);
+    Or(a=o10, b=o11, out=o14);
+    Or(a=o12, b=o14, out=o15);
+    Or(a=o13, b=o15, out=o16);
+    Or(a=o16, b=g3, out=carry);
+
+    CLA(a=a[0..3], b=b[0..3], c0=c0, sum=sum[0..3]);
+    CLA(a=a[4..7], b=b[4..7], c0=c4, sum=sum[4..7]);
+    CLA(a=a[8..11], b=b[8..11], c0=c8, sum=sum[8..11]);
+    CLA(a=a[12..15], b=b[12..15], c0=c12, sum=sum[12..15], of=of);
+}

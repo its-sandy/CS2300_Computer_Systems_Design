@@ -1,0 +1,55 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/02/FullAdder.hdl
+
+/**
+ * 16bit unsigned int multiplier
+**/
+
+CHIP Mul8CSAUnsigned {
+    IN x[8], y[8], c; 
+    OUT p[16],ans[8], overflow;   
+
+    PARTS:
+
+    Extend16(a=x, out=x0);
+
+    Not(in=c,out=cn);
+
+    Harem16(x=x0, y=y[0], ans=o0);
+    Shift(a=x0, out=x1);
+    Harem16(x=x1, y=y[1], ans=o1);
+    Shift(a=x1, out=x2);
+    Harem16(x=x2, y=y[2], ans=o2);
+    Shift(a=x2, out=x3);
+    Harem16(x=x3, y=y[3], ans=o3);
+    Shift(a=x3, out=x4);
+    Harem16(x=x4, y=y[4], ans=o4);
+    Shift(a=x4, out=x5);
+    Harem16(x=x5, y=y[5], ans=o5);
+    Shift(a=x5, out=x6);
+    Harem16(x=x6, y=y[6], ans=o6);
+    Shift(a=x6, out=x7);
+    Harem16(x=x7, y=y[7], ans=o7);
+
+    Threesum(a=o0, b=o1, c=o2, sum=s11, carry=l11);
+    Threesum(a=o3, b=o4, c=o5, sum=s12, carry=l12);
+    Shift(a=l11, out=c11);
+    Shift(a=l12, out=c12);
+
+    Threesum(a=s11, b=c11, c=c12, sum=s21, carry=l21);
+    Threesum(a=s12, b=o6, c=o7, sum=s22, carry=l22);
+    Shift(a=l21, out=c21);
+    Shift(a=l22, out=c22);
+
+    Threesum(a=s21, b=c21, c=c22, sum=s31, carry=l31);
+    Shift(a=l31, out=c31);
+
+    Threesum(a=s31, b=c31, c=s22, sum=s41, carry=l41);
+    Shift(a=l41, out=c41);
+
+    CLAHO(a=s41, b=c41, sum=p, sum[0..7]=ans, sum[8..15]=temp1);
+
+    Or8Way(in=temp1,out=overflow);
+}

@@ -1,0 +1,31 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/02/FullAdder.hdl
+
+/**
+ * Propagate and Generate first order terms
+ */
+
+ CHIP PropGen1 {
+    IN a[4], b[4];  // 4-bit inputs
+    OUT prop1,     // propagate term
+        gen1;   // generate term
+
+    PARTS:
+    PropGen(a=a[0], b=b[0], prop=p0, gen=g0);
+    PropGen(a=a[1], b=b[1], prop=p1, gen=g1);
+    PropGen(a=a[2], b=b[2], prop=p2, gen=g2);
+    PropGen(a=a[3], b=b[3], prop=p3, gen=g3);
+
+    And(a=p3, b=p2, out=p2p);
+    And(a=p2p, b=p1, out=p1p);
+    And(a=p1p, b=p0, out=prop1);
+
+    And(a=p1p, b=g0, out=g1g);
+    And(a=p2p, b=g1, out=g2g);
+    And(a=p3, b=g2, out=g3g);
+    Or(a=g1g, b=g2g, out=g4g);
+    Or(a=g4g, b=g3g, out=g5g);
+    Or(a=g5g, b=g3, out=gen1);
+}

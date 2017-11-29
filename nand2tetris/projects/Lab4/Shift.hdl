@@ -1,0 +1,20 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/Xor16.hdl
+
+/**
+ * Sign extension
+ */
+
+CHIP Shift {
+	IN a[32];
+	OUT out[32];
+
+	PARTS:
+	And16(a=a[0..15], b=a[0..15], out=out[1..16]);
+	And16(a=a[16..30], b=a[16..30], out=out[17..31]);
+	Not(in=a[0], out=n);
+	And(a=a[0], b=n, out=c);
+	And(a=c, b=c, out=out[0]);+
+}
